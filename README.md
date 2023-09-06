@@ -3,7 +3,7 @@
 ## Videos Folder Link 
 
 # https://drive.google.com/drive/folders/1ngqAmefJ0MkO_fbx7pTDM03wfm0dG6Cp
-# **********UPLOADING********************* 
+-> UPLOADING 
 
 ## TEAM MEMBERS       
 
