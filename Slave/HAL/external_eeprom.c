@@ -6,37 +6,36 @@
  *
  * Description: Source file for the External EEPROM Memory
  *
- * Author: Shawky
+ * Author: Salah
  *
  *******************************************************************************/
 #include "external_eeprom.h"
-#include "twi.h"
+#include "I2C.h"
+STATUS status;
 
 uint8 EEPROM_writeByte(uint16 u16addr, uint8 u8data)
 {
 	/* Send the Start Bit */
-    TWI_start();
-    if (TWI_getStatus() != TWI_START)
-        return ERROR;
+    I2C_start();
 		
     /* Send the device address, we need to get A8 A9 A10 address bits from the
      * memory location address and R/W=0 (write) */
-    TWI_writeByte((uint8)(0xA0 | ((u16addr & 0x0700)>>7)));
-    if (TWI_getStatus() != TWI_MT_SLA_W_ACK)
-        return ERROR; 
+    status= master_transmit_write((uint8)(0xA0 | ((u16addr & 0x0700)>>7)));
+    if (status ==ERROR)
+        return NOTSUCCESS; 
 		 
     /* Send the required memory location address */
-    TWI_writeByte((uint8)(u16addr));
-    if (TWI_getStatus() != TWI_MT_DATA_ACK)
-        return ERROR;
+    status=Master_write((uint8)(u16addr));
+    if (status ==ERROR)
+        return NOTSUCCESS;
 		
     /* write byte to eeprom */
-    TWI_writeByte(u8data);
-    if (TWI_getStatus() != TWI_MT_DATA_ACK)
-        return ERROR;
+    status=Master_write(u8data);
+    if (status ==ERROR)
+        return NOTSUCCESS;
 
     /* Send the Stop Bit */
-    TWI_stop();
+    I2C_stop();
 	
     return SUCCESS;
 }
@@ -44,39 +43,33 @@ uint8 EEPROM_writeByte(uint16 u16addr, uint8 u8data)
 uint8 EEPROM_readByte(uint16 u16addr, uint8 *u8data)
 {
 	/* Send the Start Bit */
-    TWI_start();
-    if (TWI_getStatus() != TWI_START)
-        return ERROR;
+    I2C_start();
 		
     /* Send the device address, we need to get A8 A9 A10 address bits from the
      * memory location address and R/W=0 (write) */
-    TWI_writeByte((uint8)((0xA0) | ((u16addr & 0x0700)>>7)));
-    if (TWI_getStatus() != TWI_MT_SLA_W_ACK)
-        return ERROR;
-		
+    status=master_transmit_write((uint8)(0xA0 | ((u16addr & 0x0700)>>7)));
+    if (status ==ERROR)
+        return NOTSUCCESS; 
+         
     /* Send the required memory location address */
-    TWI_writeByte((uint8)(u16addr));
-    if (TWI_getStatus() != TWI_MT_DATA_ACK)
-        return ERROR;
+    status=Master_write((uint8)(u16addr));
+    if (status ==ERROR)
+        return NOTSUCCESS;
 		
     /* Send the Repeated Start Bit */
-    TWI_start();
-    if (TWI_getStatus() != TWI_REP_START)
-        return ERROR;
+    I2C_restart();
 		
     /* Send the device address, we need to get A8 A9 A10 address bits from the
      * memory location address and R/W=1 (Read) */
-    TWI_writeByte((uint8)((0xA0) | ((u16addr & 0x0700)>>7) | 1));
-    if (TWI_getStatus() != TWI_MT_SLA_R_ACK)
-        return ERROR;
+    status=master_transmit_read((uint8)((0xA0) | ((u16addr & 0x0700)>>7)|1));
+    if (status ==ERROR)
+        return NOTSUCCESS;
 
     /* Read Byte from Memory without send ACK */
-    *u8data = TWI_readByteWithNACK();
-    if (TWI_getStatus() != TWI_MR_DATA_NACK)
-        return ERROR;
+    *u8data = Master_read(WITH_NACK);
 
     /* Send the Stop Bit */
-    TWI_stop();
+    I2C_stop();
 
     return SUCCESS;
 }

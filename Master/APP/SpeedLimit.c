@@ -4,12 +4,12 @@
  *  Created on: Sep 3, 2023
  *      Author: amrfawzy
  */
+#define F_CPU 16000000UL
 
 #include "lcd.h"  /* driver from KL15 project on github */
 #include "push_button.h"  /* driver from KL15 project on github */
 #include "std_types.h"
 #include "Potentiometer.h"
-#define F_CPU 16000000UL
 #include <util/delay.h>
 #include "spi.h"
 
@@ -93,7 +93,7 @@ void getSpeed(uint8* speed, uint8_t gear , uint8 is_speed_limit_on)
 	if(setSpeedFlag == 1)
         {
         speed_limit = SPI_sendReceiveByte(200);
-        _delay_ms(100);
+        _delay_ms(10);
 		speed_limit = SPI_sendReceiveByte(0);
 		setSpeedFlag = 0;
 	}

@@ -9,7 +9,6 @@
 #ifndef POTENTIOMETER_H_
 #define POTENTIOMETER_H_
 
-#include <avr/io.h>
 #include "ADC.h"
 #include "GPIO.h"
 

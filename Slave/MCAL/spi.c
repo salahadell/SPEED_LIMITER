@@ -11,9 +11,8 @@
  *******************************************************************************/
 #include "util/delay.h"
 #include "spi.h"
-#include "gpio.h" /* To Setup the SPI pins direction */
+#include "GPIO.h" /* To Setup the SPI pins direction */
 #include "common_macros.h" /* To use the macros like SET_BIT */
-#include "avr/io.h" /* To use the SPI Registers */
 
 /*******************************************************************************
  *                      Functions Definitions                                  *
@@ -37,17 +36,17 @@ void SPI_initMaster(void)
 	
     /************************** SPCR Description **************************
      * SPIE    = 0 Disable SPI Interrupt
-     * SPE     = 1 Enable SPI Driver
+     * SPCR_SPE     = 1 Enable SPI Driver
      * DORD    = 0 Transmit the MSB first
-     * MSTR    = 1 Enable Master
+     * SPCR_MSTR    = 1 Enable Master
      * CPOL    = 0 SCK is low when idle
      * CPHA    = 0 Sample Data with the raising edge
      * SPR1:0  = 00 Choose SPI clock = Fosc/4
      ***********************************************************************/
-	SPCR = (1<<SPE) | (1<<MSTR);
+	SPCR = (1<<SPCR_SPE) | (1<<SPCR_MSTR);
 
-	/* Clear the SPI2X bit in SPSR to Choose SPI clock = Fosc/4 */
-	SPSR &= ~(1<<SPI2X);
+	/* Clear the SPSR_SPIF bit in SPSR to Choose SPI clock = Fosc/4 */
+	SPSR &= ~(1<<SPSR_SPIF);
 }
 
 /*
@@ -68,17 +67,17 @@ void SPI_initSlave(void)
 
 	/************************** SPCR Description **************************
 	 * SPIE    = 0 Disable SPI Interrupt
-	 * SPE     = 1 Enable SPI Driver
+	 * SPCR_SPE     = 1 Enable SPI Driver
 	 * DORD    = 0 Transmit the MSB first
-	 * MSTR    = 0 Disable Master
+	 * SPCR_MSTR    = 0 Disable Master
 	 * CPOL    = 0 SCK is low when idle
 	 * CPHA    = 0 Sample Data with the raising edge
 	 * SPR1:0  = 00 Choose SPI clock = Fosc/4
 	 ***********************************************************************/
-	SPCR = (1<<SPE);
+	SPCR = (1<<SPCR_SPE);
 
-	/* Clear the SPI2X bit in SPSR to Choose SPI clock = Fosc/4 */
-	SPSR &= ~(1<<SPI2X);
+	/* Clear the SPSR_SPIF bit in SPSR to Choose SPI clock = Fosc/4 */
+	SPSR &= ~(1<<SPSR_SPIF);
 }
 
 /*
@@ -92,8 +91,8 @@ uint8 SPI_sendReceiveByte(uint8 data)
 	SPDR = data;
 
 	/* Wait until SPI interrupt flag SPIF = 1 (data has been sent/received correctly) */
-	while(BIT_IS_CLEAR(SPSR,SPIF)){}
-	//_delay_ms(100);
+	while(BIT_IS_CLEAR(SPSR,SPSR_SPIF)){}
+	_delay_ms(100);
 	/*
 	 * Note: SPIF flag is cleared by first reading SPSR (with SPIF set) which is done in the previous step.
 	 * and then accessing SPDR like the below line.

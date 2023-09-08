@@ -9,7 +9,7 @@
 #include "util/delay.h"
 #include "lcd.h"
 #include "external_eeprom.h"
-#include "twi.h"
+#include "I2C.h"
 #include "spi.h"
 uint8 data = 0;
 uint8 saved_data = 0;
@@ -18,45 +18,26 @@ int main(void)
 {
 	
 	SPI_initSlave();
-    TWI_init();
+	/*I2c Bit Rate: 400.000 kbps using zero pre-scaler TWPS=00 and F_CPU=16Mhz */
+    master_init(I2C_STANDARD_SPEED_400K,Prescaler_1);
 	while(1)
 	{
 		data = SPI_sendReceiveByte(saved_data);
-		/*if(BIT_IS_SET(data,7))
-		{
-			CLEAR_BIT(data,7);
-			EEPROM_writeByte(0x0311,data);
-			_delay_ms(10);
-		}*/
-		/*if(data==80||data==90||data==120)
-		{
-            EEPROM_writeByte(0x0311,data);
-			_delay_ms(10);
-			EEPROM_readByte(0x0311,&saved_data);
-			_delay_ms(10);
-
-		}*/
-		/*else
-		{
-			SPI_sendReceiveByte(saved_data);
-		}
-		EEPROM_readByte(0x0311,&saved_data);*/
-
 		switch(data)
 		{
+			//if the value equals the speed limiter values then save it
 			case 80:
 			case 90:
 			case 120:
 				 EEPROM_writeByte(0x0311,data);
-				// _delay_ms(10);
-				//EEPROM_readByte(0x0311,&saved_data);
 				 break;
 			case 0:
-				//SPI_sendReceiveByte(saved_data);
+				//we call this case after calling the update case using default to read the correct value from the EEPROM
+				/*do nothing*/
 			break;
 			default:
+				//update the value before read it
 				EEPROM_readByte(0x0311,&saved_data);
-				SPI_sendReceiveByte(saved_data);
 				break;
 		}
 	}

@@ -2,9 +2,8 @@
  * lcd.c
  *
  *  Created on: Aug 18, 2023
- *      Author: Salah Adel
+ *      Author: Shawky
  */
-#include <avr/io.h>
 #include <util/delay.h>
 #include "GPIO.h"
 #include "lcd_cfg.h"
@@ -31,10 +30,11 @@ void LCD_Init(void)
 
 	LCD_WriteCommand(LCD_TWO_LINES_FOUR_BITS_MODE);
 
-
-	LCD_WriteCommand(LCD_CURSOR_OFF);
+     LCD_WriteCommand(LCD_CURSOR_OFF);
 	LCD_WriteCommand(LCD_CLEAR_COMMAND);
 	LCD_WriteCommand(0x0F);
+	
+
 }
 
 void LCD_WriteCommand(uint8 cmd)
@@ -109,38 +109,33 @@ void LCD_WriteString(const char *str)
 	}
 }
 
-void LCD_intgerToString(uint32 number){
-	if (number==0)
-	{
-		LCD_Writechar('0');
-		return;
-	}
-	int n=number;
-	uint8 count=0;
-	uint8 digit=0;
-	for (uint8 i=0;n!=0;i++){
-		n=n/10;
-		count++;
-	}
-	uint8 arr[count];
-	n=number;
-	for (int i=(count-1);i>=0 ;--i){
-		digit=n%10;
-		digit= digit+'0';
-		arr[i]=digit;
-		n=n/10;
-	}
-	for (uint8 i=0;i<count;i++){
-		LCD_Writechar(arr[i]);
-	}
 
+void LCD_intgerToString(uint32 data)
+{
+   if (data==0)
+   {
+	   LCD_Writechar('0');
+	   return;
+   }
+   int n=data;
+   uint8 count=0;
+   uint8 digit=0;
+   for (uint8 i=0;n!=0;i++){
+	   n=n/10;
+	   count++;
+   }
+   uint8 arr[count];
+   n=data;
+   for (int i=(count-1);i>=0 ;--i){
+	   digit=n%10;
+	   digit= digit+'0';
+	   arr[i]=digit;
+	   n=n/10;
+   }
+   for (uint8 i=0;i<count;i++){
+	   LCD_Writechar(arr[i]);
+   }
 }
-//void LCD_intgerToString(uint32 data)
-//{
-  // char buff[16]; /* String to hold the ascii result */
-   //ltoa(data,buff,10); /* Use itoa C function to convert the data to its corresponding ASCII value, 10 for decimal */
-   //LCD_WriteString(buff); /* Display the string */
-//}
 
 
 void LCD_Clear(void)
@@ -148,48 +143,36 @@ void LCD_Clear(void)
 	LCD_WriteCommand(0x01);
 }
 
-void LCD_GOTO_XY(uint32 line,  uint32 position){
+void LCD_GOTO_XY(uint8 line,  uint8 position){
+	
 	if (line == 1)
 	{
-		if ((position < 20) && (position >= 0)) //MAKING SURE THAT THE POSITION IS IN THE AVALABLE 20 CHAR RANGE
+		if (position < 20 && position >= 0)
 		{
-			LCD_WriteCommand(LCD_BEGIN_AT_FIRST_ROW+position); //MOVE THE CURSOR TO THE DESSIRED POSITION
-		}
-		else{
-			/*ERROR*/
+			LCD_WriteCommand(LCD_BEGIN_AT_FIRST_ROW+position);
 		}
 	}
 	else if (line == 2)
 	{
-		if ((position < 20) && (position >= 0))
+		if (position < 20 && position >= 0)
 		{
 			LCD_WriteCommand(LCD_BEGIN_AT_SECOND_ROW+position);
-		}
-		else{
-			/*ERROR*/
 		}
 	}
 	else if (line == 3)
 	{
-		if ((position < 20) && (position >= 0))
+		if (position < 20 && position >= 0)
 		{
 			LCD_WriteCommand(LCD_BEGIN_AT_THIRD_ROW+position);
-		}
-		else{
-			/*ERROR*/
 		}
 	}
 	else if (line == 4)
 	{
-		if ((position < 20) && (position >= 0))
+		if (position < 20 && position >= 0)
 		{
 			LCD_WriteCommand(LCD_BEGIN_AT_FOURTH_ROW+position);
 		}
-		else{
-			/*ERROR*/
-		}
 	}
-	else{	/*ERROR*/}
 }
 
 

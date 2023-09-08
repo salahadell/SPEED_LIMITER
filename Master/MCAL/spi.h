@@ -14,7 +14,54 @@
 #define SPI_H_
 
 #include "std_types.h"
+/*******************************************************************************
+ *                                SPI registers                                 *
+ *******************************************************************************/
+#define SPCR  *((volatile uint8*) 0x2D)
+#define SPSR  *((volatile uint8*) 0x2E)
+#define SPDR  *((volatile uint8*) 0x2F)
+/*******************************************************************************
+ *                                SPCR BITS                                 *
+ *******************************************************************************/
+#define SPCR_SPIE  7
+#define SPCR_SPE   6
+#define SPCR_DORD  5
+#define SPCR_MSTR  4
+#define SPCR_CPOL  3
+#define SPCR_CPHA  2
+#define SPCR_PRE   0
+/*******************************************************************************
+ *                                SPSR BITS                                 *
+ *******************************************************************************/
+#define SPSR_SPIF  7
+#define SPSR_WCOL  6
+#define SPSR_SPI2X  0
 
+#define SPIE_EN  1
+#define SPIE_DS  0
+
+#define SPE_EN   1
+#define SPE_DS   0
+
+#define DORD_LSB_FIRST  1
+#define DORD_MSB_FIRST  0
+
+#define MSTR_MASTER_MODE  1
+#define MSTR_SLAVE_MODE   0
+
+#define CPOL_RISING    0
+#define CPOL_FALLING   1    
+
+#define CPHA_SAMPLE  0
+#define CHPA_SETUP   1
+
+#define SPI_PRE4     0
+#define SPI_PRE16    1
+#define SPI_PRE64    2
+#define SPI_PRE128   3
+
+#define SPI2X_EN   1
+#define SPI2X_DS   0
 /*******************************************************************************
  *                                Definitions                                  *
  *******************************************************************************/

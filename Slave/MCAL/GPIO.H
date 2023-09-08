@@ -10,7 +10,7 @@
 
 #include "std_types.h"
 #include "common_macros.h"
-
+#include "atmega32_register.h"
 
 #define DIO_PORTA				0
 #define DIO_PORTB				1

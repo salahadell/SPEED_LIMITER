@@ -21,8 +21,7 @@ void LCD_WriteString(const char *str);
 
 void LCD_Clear(void);
 
-void LCD_intgerToString(uint32 number);
+void LCD_intgerToString(uint32 data);
 
-void LCD_GOTO_XY(uint32 line,  uint32 position);
-
+void LCD_GOTO_XY(unsigned char line, unsigned char position);
 #endif /* LCD_H_ */

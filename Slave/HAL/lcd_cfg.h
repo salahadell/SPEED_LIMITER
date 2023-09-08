@@ -35,7 +35,7 @@
 #define LCD_BEGIN_AT_FIRST_ROW			 	 0x80
 #define LCD_BEGIN_AT_SECOND_ROW				 0xc0
 #define LCD_BEGIN_AT_THIRD_ROW				 0x94
-#define LCD_BEGIN_AT_FOURTH_ROW				 0xE0
+#define LCD_BEGIN_AT_FOURTH_ROW				 0xD4
 #define LCD_SET_CURSOR_LOCATION              0x80
 
 

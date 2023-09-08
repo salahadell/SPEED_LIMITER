@@ -5,7 +5,6 @@
  *      Author: Shawky
  */
 
-#include <avr/io.h>
 #include "GPIO.h"
 
 
