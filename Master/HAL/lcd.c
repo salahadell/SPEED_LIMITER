@@ -117,6 +117,7 @@ void LCD_intgerToString(uint32 data)
 	   LCD_Writechar('0');
 	   return;
    }
+   else{};
    int n=data;
    uint8 count=0;
    uint8 digit=0;
@@ -147,32 +148,37 @@ void LCD_GOTO_XY(uint8 line,  uint8 position){
 	
 	if (line == 1)
 	{
-		if (position < 20 && position >= 0)
+		if ((position < 20) && (position >= 0)) //MAKING SURE THAT THE POSITION IS IN THE AVALABLE 20 CHAR RANGE
 		{
-			LCD_WriteCommand(LCD_BEGIN_AT_FIRST_ROW+position);
+			LCD_WriteCommand(LCD_BEGIN_AT_FIRST_ROW+position); //MOVE THE CURSOR TO THE DESSIRED POSITION
 		}
+		else{/*ERROR*/};
 	}
 	else if (line == 2)
 	{
-		if (position < 20 && position >= 0)
+		if ((position < 20 )&& (position >= 0))
 		{
 			LCD_WriteCommand(LCD_BEGIN_AT_SECOND_ROW+position);
 		}
+		else{/*ERROR*/};
 	}
 	else if (line == 3)
 	{
-		if (position < 20 && position >= 0)
+		if ((position < 20 && position >= 0))
 		{
 			LCD_WriteCommand(LCD_BEGIN_AT_THIRD_ROW+position);
 		}
+		else{/*ERROR*/};
 	}
 	else if (line == 4)
 	{
-		if (position < 20 && position >= 0)
+		if ((position < 20) && (position >= 0))
 		{
 			LCD_WriteCommand(LCD_BEGIN_AT_FOURTH_ROW+position);
 		}
+		else{/*ERROR*/};
 	}
+	else{/*ERROR*/};
 }
 
 
