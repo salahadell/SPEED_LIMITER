@@ -13,9 +13,9 @@
 #include "common_macros.h"
 #include "std_types.h"
 
-//====================================================================
-//						Configuration Structure
-//====================================================================
+/*====================================================================*/
+/*					Configuration Structure                          */
+/*====================================================================*/
 typedef struct
 {
 	uint8 ADC_MODE;					// specifies ADC Mode (Single conversion mode or Free running mode)						>> @ref ADC_MODE_DEFINE
@@ -27,32 +27,32 @@ typedef struct
 }ADC_Config_t;
 
 
-//====================================================================
-//						Macros Configuration Reference
-//====================================================================
+/*====================================================================*/
+/*					Macros Configuration Reference                    */
+/*====================================================================*/
 
-//-----------------------------
-//@ref ADC_MODE_DEFINE (ADCSRA >> ADSC)
-//-----------------------------
+/*-----------------------------*/
+/*@ref ADC_MODE_DEFINE (ADCSRA >> ADSC)*/
+/*-----------------------------*/
 #define ADC_MODE_SINGLE_CONVERSION							(uint8)(0)
 #define ADC_MODE_FREE_RUNNING								((uint8)1<<6)
 
-//-----------------------------
-//@ref ADC_Voltage_REF_DEFINE (ADMUX >> REFS0)
-//-----------------------------
+/*-----------------------------*/
+/*@ref ADC_Voltage_REF_DEFINE (ADMUX >> REFS0)*/
+/*-----------------------------*/
 #define ADC_VREF_AVCC										((uint8)1<<6)
 #define ADC_VREF_INTERNAL								    ((uint8)3<<6)
 #define ADC_VREF_EXTERNAL_AREF								(uint8)(0)
 
-//-----------------------------
-//@ref ADC_Result_Presentation_DEFINE (ADMUX >> ADLAR)
-//-----------------------------
+/*-----------------------------*/
+/*@ref ADC_Result_Presentation_DEFINE (ADMUX >> ADLAR)*/
+/*-----------------------------*/
 #define ADC_Result_Presentation_RIGHT						(uint8)(0)
 #define ADC_Result_Presentation_LEFT						((uint8)1<<5)
 
-//-----------------------------
-//@ref ADC_PRESCALER_DEFINE (ADCSRA >> ADPS0)
-//-----------------------------
+/*-----------------------------*/
+/*@ref ADC_PRESCALER_DEFINE (ADCSRA >> ADPS0)*/
+/*-----------------------------*/
 #define ADC_PRESCALER_2										((uint8)1<<0)
 #define ADC_PRESCALER_4										((uint8)2<<0)
 #define ADC_PRESCALER_8										((uint8)3<<0)
@@ -61,9 +61,9 @@ typedef struct
 #define ADC_PRESCALER_64									((uint8)6<<0)
 #define ADC_PRESCALER_128									((uint8)7<<0)
 
-//-----------------------------
-//@ref IRQ_ENABLE_DEFINE (ADCSRA >> ADIE)
-//-----------------------------
+/*-----------------------------*/
+/*@ref IRQ_ENABLE_DEFINE (ADCSRA >> ADIE)*/
+/*-----------------------------*/
 #define ADC_IRQ_DISABLE									    (uint8)(0)
 #define ADC_IRQ_ENABLE										((uint8)1<<3)
 

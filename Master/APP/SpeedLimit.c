@@ -33,7 +33,7 @@ uint8 speed_limit = 20;
 void init(void);
 void homePage(void);
 void getSpeed(uint8* speed, uint8_t gear , uint8 is_speed_limit_on);
-void set_speed_limit();
+void set_speed_limit(void);
 /*
  *  gear modes
  *  gear = 0 --> P
@@ -42,7 +42,7 @@ void set_speed_limit();
  *  gear = 3 --> D
  */
 
-void set_speed_limit()
+void set_speed_limit(void)
 {
 	uint8 speedlimit=0;
 	LCD_Clear();
@@ -57,32 +57,31 @@ void set_speed_limit()
 	{
 		if(ButtonPressed(BUTTON1)==0) /*if button 1 pressed the speed limit is set to 80*/
 		{
-			while(ButtonPressed(BUTTON1) == 0);
+			while(ButtonPressed(BUTTON1) == 0){}
 			speedlimit=80;
 			break;
 		}
 		else if (ButtonPressed(BUTTON2)==0) /*if button 2 pressed the speed limit is set to 90*/
 		{
-			while(ButtonPressed(BUTTON2) == 0);
+			while(ButtonPressed(BUTTON2) == 0){}
 			speedlimit=90;
 			break;
 		}
 		else if(ButtonPressed(BUTTON3)==0) /*if button 3 pressed the speed limit is set to 120*/
 		{
-			while(ButtonPressed(BUTTON3) == 0);
+			while(ButtonPressed(BUTTON3) == 0){}
 			speedlimit=120;
 			break;
 		}
 		else if(ButtonPressed(BUTTON4)==0) /*if button 4 pressed then break */
 		{
-			while(ButtonPressed(BUTTON4) == 0);
+			while(ButtonPressed(BUTTON4) == 0){}
 			return;
 		}
 		else{}
 			
 
 	}
-	//SET_BIT(speedlimit,7);
 	setSpeedFlag = 1;
 	SPI_sendReceiveByte(speedlimit);
 	LCD_Clear();
@@ -97,6 +96,8 @@ void getSpeed(uint8* speed, uint8_t gear , uint8 is_speed_limit_on)
 		speed_limit = SPI_sendReceiveByte(0);
 		setSpeedFlag = 0;
 	}
+	else{/*ERROR*/}
+
 	*speed = ReadPotentiometer();
 	
 	if(*speed > PotentiometerShift){
@@ -112,9 +113,12 @@ void getSpeed(uint8* speed, uint8_t gear , uint8 is_speed_limit_on)
 		*speed = speed_limit ;
 		
 	}
+	else{/*ERROR*/}
 	if(gear == GEAR_R && *speed > 30){
 		*speed = 30;
 	}
+	else{/*ERROR*/}
+
 	LCD_GOTO_XY(1,17);
 	LCD_intgerToString(speed_limit);
 	LCD_Writechar(' ');
@@ -125,7 +129,7 @@ void getSpeed(uint8* speed, uint8_t gear , uint8 is_speed_limit_on)
 void getGear(uint8* gear){
 
 	if(ButtonPressed(Button_Plus) == 0){
-		while(ButtonPressed(Button_Plus) == 0);
+		while(ButtonPressed(Button_Plus) == 0){}
 
 		switch(*gear){
 			case 0:
@@ -141,7 +145,7 @@ void getGear(uint8* gear){
 	}
 
 	else if(ButtonPressed(Button_Minus) == 0){
-		while(ButtonPressed(Button_Minus) == 0);
+		while(ButtonPressed(Button_Minus) == 0){}
 
 		switch(*gear){
 			case 0:
@@ -155,17 +159,18 @@ void getGear(uint8* gear){
 				break;
 		}
 	}
+	else{}
 }
 
 void operation(uint8* speed_limit , uint8* is_speed_limit_on){
 	if(ButtonPressed(Button_SET_LIMIT) == 0)
 	{
-		while(ButtonPressed(Button_SET_LIMIT) == 0);
+		while(ButtonPressed(Button_SET_LIMIT) == 0){}
 		set_speed_limit();
 	}
 	else if(ButtonPressed(Button_TOGGLE_LIMIT) == 0)
 	{
-		while(ButtonPressed(Button_TOGGLE_LIMIT) == 0);
+		while(ButtonPressed(Button_TOGGLE_LIMIT) == 0){}
 		if(*is_speed_limit_on == 0){
 			*is_speed_limit_on = 1;
 		}
@@ -173,7 +178,7 @@ void operation(uint8* speed_limit , uint8* is_speed_limit_on){
 			*is_speed_limit_on = 0;
 		}
 	}
-
+	else{}
 
 }
 
@@ -227,6 +232,8 @@ void homePage(void)
 				LCD_GOTO_XY(2,13);
 				LCD_WriteString("gear(D)");
 				break;
+			default:
+				break;
 		}
 		LCD_GOTO_XY(1,0);
 		LCD_WriteString("speed limit: ");
@@ -249,7 +256,7 @@ void homePage(void)
 	
 }
 
-void init()
+void init(void)
 {
 	LCD_Init();
 	Potentimeter_init();

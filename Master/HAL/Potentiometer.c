@@ -12,9 +12,9 @@
 
 void Potentimeter_init(){
 	
-	//-----------------------------
-	//1) Initialize ADC
-	//-----------------------------
+	/*-----------------------------*/
+	/*1) Initialize ADC            */
+	/*-----------------------------*/
 	ADC_Config_t ADC_Config;
 	ADC_Config.ADC_MODE = ADC_MODE_SINGLE_CONVERSION;
 	ADC_Config.ADC_PRESCALER = ADC_PRESCALER_128;
@@ -24,9 +24,9 @@ void Potentimeter_init(){
 	ADC_Config.P_CallBack = NULL;
 	ADC_init(&ADC_Config);
 	
-	//-----------------------------
-	//2) Initialize Potentiometer
-	//-----------------------------
+	/*-----------------------------*/
+	/*2) Initialize Potentiometer  */
+	/*-----------------------------*/
 	DIO_SetPinDir(DIO_PORTA, DIO_PIN0, DIO_PIN_INPUT);
 }
 

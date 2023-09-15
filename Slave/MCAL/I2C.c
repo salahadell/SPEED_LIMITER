@@ -6,23 +6,23 @@
  */ 
 #include "I2C.h"
 
-void I2C_start()
+void I2C_start(void)
 {
 	TWCR=(1<<TWINT|1<<TWSTA|1<<TWEN);
-	//making sure that the int flag is set to one 
-	while(READ_BIT(TWCR,TWINT)==0);
-	//read the status register to make sure that the start ACK received
-	while((TWSR&0xF8)!=START_ACK);
+	/*making sure that the int flag is set to one*/
+	while(READ_BIT(TWCR,TWINT)==0){}
+	/*read the status register to make sure that the start ACK received*/
+	while((TWSR&0xF8)!=START_ACK){}
 }
-void I2C_restart()
+void I2C_restart(void)
 {
 	TWCR=(1<<TWINT|1<<TWSTA|1<<TWEN);
-	//making sure that the int flag is set to one
-	while(READ_BIT(TWCR,TWINT)==0);
-	//read the status register to make sure that the start ACK received
-	while((TWSR&0xF8)!=REP_START_ACK);
+	/*making sure that the int flag is set to one*/
+	while(READ_BIT(TWCR,TWINT)==0){}
+	/*read the status register to make sure that the start ACK received*/
+	while((TWSR&0xF8)!=REP_START_ACK){}
 }
-void I2C_stop()
+void I2C_stop(void)
 {
 	TWCR=(1<<TWINT|1<<TWSTO|1<<TWEN);
 	
@@ -31,44 +31,44 @@ uint8 Slave_read(uint8 ack)
 {
 	if(ack==1)
 	{
-		//send ACK
+		/*send ACK*/
 		TWCR=(1<<TWINT|1<<TWEA|1<<TWEN);
-		while(READ_BIT(TWCR,TWINT)==0);
-		while((TWSR&0xF8)!=SLAVE_DATA_RECEIVED_ACK);
+		while(READ_BIT(TWCR,TWINT)==0){}
+		while((TWSR&0xF8)!=SLAVE_DATA_RECEIVED_ACK){}
 	}
 	else
 	{
-		//send NACK
+		/*send NACK*/
 		TWCR=(1<<TWINT|1<<TWEN);
-		while(READ_BIT(TWCR,TWINT)==0);
-		while((TWSR&0xF8)!=SLAVE_DATA_RECEIVED_NACK);	
+		while(READ_BIT(TWCR,TWINT)==0){}
+		while((TWSR&0xF8)!=SLAVE_DATA_RECEIVED_NACK){}
 	}
 	return TWDR;
 }
 STATUS Slave_write(uint8 data)
 {
 		TWDR=data;	
-		//send data
+		/*send data*/
 		TWCR=(1<<TWINT|1<<TWEN);
-		while(READ_BIT(TWCR,TWINT)==0);
-		//return status of TWSR (ACK,NACK,ERROR)
+		while(READ_BIT(TWCR,TWINT)==0){}
+		/*return status of TWSR (ACK,NACK,ERROR)*/
 		return Data_Acknowledge_received_from_master();
 }
 uint8 Master_read(uint8 ack)
 {
 	if(ack==1)
 	{
-		//send ACK
+		/*send ACK*/
 	  TWCR=(1<<TWINT|1<<TWEA|1<<TWEN);
-	  while(READ_BIT(TWCR,TWINT)==0);
-	  while((TWSR&0xF8)!=MSTR_RD_BYTE_WITH_ACK);
+	  while(READ_BIT(TWCR,TWINT)==0){}
+	  while((TWSR&0xF8)!=MSTR_RD_BYTE_WITH_ACK){}
 	}
 	else
 	{
-		//send NACK
+		/*send NACK*/
 	 TWCR=(1<<TWINT|1<<TWEN);
-	 while(READ_BIT(TWCR,TWINT)==0);
-	 while((TWSR&0xF8)!=MSTR_RD_BYTE_WITH_NACK);
+	 while(READ_BIT(TWCR,TWINT)==0){}
+	 while((TWSR&0xF8)!=MSTR_RD_BYTE_WITH_NACK){}
 	}
 	
 	return TWDR;
@@ -76,11 +76,11 @@ uint8 Master_read(uint8 ack)
 STATUS Master_write(uint8 data)
 {
 	TWDR=data;
-	//send data
+	/*send data*/
 	TWCR=(1<<TWINT|1<<TWEN);
-	//making sure that the int flag is set to one
-	while(READ_BIT(TWCR,TWINT)==0);
-	//return status of TWSR (ACK,NACK,ERROR)
+	/*making sure that the int flag is set to one*/
+	while(READ_BIT(TWCR,TWINT)==0){}
+	/*return status of TWSR (ACK,NACK,ERROR)*/
 	return Data_Acknowledge_received_from_slave();
 	
 }
@@ -107,32 +107,32 @@ void master_init(uint32 SCL_FREQ,Prescaler prescaler)
 }
 STATUS master_transmit_write(uint8 Slave_ADD)
 {
-	//set the most seven bits to the slave address and first bit to 0
+	/*set the most seven bits to the slave address and first bit to 0*/
 	TWDR=Slave_ADD;
-	//send data
+	/*send data*/
 	TWCR=(1<<TWINT|1<<TWEN);
-	//making sure that the int flag is set to one
-	while(READ_BIT(TWCR,TWINT)==0);
-	//return status of TWSR (ACK,NACK,ERROR)
+	/*making sure that the int flag is set to one*/
+	while(READ_BIT(TWCR,TWINT)==0){}
+	/*return status of TWSR (ACK,NACK,ERROR)*/
 	return ADDRESS_Acknowledge_received_from_slave();
 }
 STATUS master_transmit_read(uint8 Slave_ADD)
 {
-	//set the most seven bits to the slave address and first bit to 1
+	/*set the most seven bits to the slave address and first bit to 1*/
 	TWDR=Slave_ADD;
-	//send data
+	/*send data*/
 	TWCR=(1<<TWINT|1<<TWEN);
-	//making sure that the int flag is set to one
-	while(READ_BIT(TWCR,TWINT)==0);
-	//return status of TWSR (ACK,NACK,ERROR)
+	/*making sure that the int flag is set to one*/
+	while(READ_BIT(TWCR,TWINT)==0){}
+	/*return status of TWSR (ACK,NACK,ERROR)*/
 	return ADDRESS_Acknowledge_received_from_slave();
 }
 void slave_init(uint8 address,uint8 GCALL_MODE)
 {
-	//set slave address and GENERAL CALL
+	/*set slave address and GENERAL CALL*/
 	TWAR=(address<<1|GCALL_MODE);
 }
-STATUS ADDRESS_Acknowledge_received_from_slave()
+STATUS ADDRESS_Acknowledge_received_from_slave(void)
 {
 	STATUS status;
 		if((TWSR&0xF8)==SLAVE_ADD_AND_WR_ACK||(TWSR&0xF8)==SLAVE_ADD_AND_RD_ACK)
@@ -150,7 +150,7 @@ STATUS ADDRESS_Acknowledge_received_from_slave()
 		}
 		return status;
 }
-STATUS Data_Acknowledge_received_from_slave()
+STATUS Data_Acknowledge_received_from_slave(void)
 {
 		STATUS status;
 		if((TWSR&0xF8)==MSTR_WR_BYTE_ACK)
@@ -168,7 +168,7 @@ STATUS Data_Acknowledge_received_from_slave()
 		}
 		return status;
 }
-STATUS Data_Acknowledge_received_from_master()
+STATUS Data_Acknowledge_received_from_master(void)
 {
 	STATUS status;
 	if((TWSR&0xF8)==SLAVE_BYTE_TRANSMITTED_ACK)
